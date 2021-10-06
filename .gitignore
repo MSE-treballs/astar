@@ -1,0 +1,14 @@
+# Ingore all
+*
+
+# Unignore all with extensions
+!*.*
+# Unignore all folders
+!*/
+# Unignore makefile
+!Makefile
+
+*.out
+
+*.o
+*.tar.gz

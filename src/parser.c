@@ -37,6 +37,7 @@ void read_graph_from_file(FILE *f) {
         if(line[0] == 'n') {
             size_t pos = 5;
             size_t id = strtoull(line + pos, NULL, 10);
+            printf("id: %zu\n", id);
 
             short counter = 0;
             do {
@@ -64,11 +65,57 @@ void read_graph_from_file(FILE *f) {
                 .successors = NULL
             };
 
-            printNode(nodes + index);
-
             index++;
         } else if(line[0] == 'w') {
-            // TODO
+            fprintf(stderr, "%s", line);
+            size_t pos = 4;
+            short counter = 0;
+            do {
+                do {
+                    pos++;
+                } while(line[pos] != '|');
+                counter++;
+            } while(counter < 6);
+            pos++;
+
+            Bool oneway = FALSE; // TODO: use
+            if(line[pos] == 'o') {
+                oneway = TRUE;
+            }
+
+            do {
+                do {
+                    pos++;
+                } while(line[pos] != '|');
+                counter++;
+            } while(counter < 2);
+            pos++;
+
+            char *next_id = NULL;
+            size_t way_id = strtoull(line + pos, &next_id, 10);
+            size_t index_from = search_node(way_id, nodes, n_nodes);
+            fprintf(stderr, "id: %zu\n", way_id);
+
+            while(next_id != NULL) {
+                size_t way_id = strtoull(next_id + 1, &next_id, 10);
+                size_t index_to = search_node(way_id, nodes, n_nodes);
+                fprintf(stderr, "id: %zu\n", way_id);
+
+                Node *node = nodes + index_from;
+
+                size_t *tmp = (size_t *) realloc(node->successors, sizeof(size_t) * (node->n_successors + 1));
+                if(tmp == NULL) {
+                    fprintf(stderr, "Could not allocate enough memory for %zu successors to node %zu\n", node->n_successors + 1, node->id);
+                    return;
+                }
+                node->successors = tmp;
+
+                node->successors[node->n_successors] = index_to;
+                node->n_successors++;
+
+                index_from = index_to;
+            }
+
         } else {
             break;
         }

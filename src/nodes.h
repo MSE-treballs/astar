@@ -7,7 +7,8 @@ typedef struct Node {
     double lat;
     double lon;
     size_t n_successors;
-    Node *successors;
+    size_t *successors;
 } Node;
 
 void printNode(const Node *node);
+size_t search_node(const size_t id, const Node *nodes, const size_t n_nodes);

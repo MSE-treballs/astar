@@ -1,8 +1,8 @@
 #include "parser.h"
 
 void read_graph_from_file(FILE *f) {
-    char *line;
-    size_t line_length;
+    char *line = NULL;
+    size_t line_length = 0;
 
     getline(&line, &line_length, f); // Ignore first three rows of the file
     getline(&line, &line_length, f);

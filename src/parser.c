@@ -68,7 +68,6 @@ void read_graph_from_file(FILE *f) {
 
             index++;
         } else if(line[0] == 'w') {
-            fprintf(stderr, "%s", line);
             size_t pos = 4;
             short counter = 0;
             do {
@@ -90,24 +89,21 @@ void read_graph_from_file(FILE *f) {
                 } while(line[pos] != '|');
                 counter++;
             } while(counter < 2);
-            pos++;
 
-            char *next_id = NULL;
-            size_t way_id = strtoull(line + pos, &next_id, 10);
-            size_t index_from = search_node(way_id, nodes, n_nodes);
+            char *next_id = line + pos;
+            size_t index_to, index_from;
 
-            while(next_id != NULL) {
+            do {
                 size_t way_id = strtoull(next_id + 1, &next_id, 10);
-                size_t index_to = search_node(way_id, nodes, n_nodes);
+                index_to = search_node(way_id, nodes, n_nodes);
 
                 add_successor(nodes, index_from, index_to);
-
                 if(oneway == FALSE) {
                     add_successor(nodes, index_to, index_from);
                 }
 
                 index_from = index_to;
-            }
+            } while(*next_id != '\n');
 
         } else {
             break;

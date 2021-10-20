@@ -1,5 +1,7 @@
 #include "parser.h"
 
+void add_successor(Node *nodes, const size_t index_from, const size_t index_to);
+
 void read_graph_from_file(FILE *f) {
     char *line = NULL;
     size_t line_length = 0;
@@ -77,7 +79,7 @@ void read_graph_from_file(FILE *f) {
             } while(counter < 6);
             pos++;
 
-            Bool oneway = FALSE; // TODO: use
+            Bool oneway = FALSE;
             if(line[pos] == 'o') {
                 oneway = TRUE;
             }
@@ -98,17 +100,11 @@ void read_graph_from_file(FILE *f) {
                 size_t way_id = strtoull(next_id + 1, &next_id, 10);
                 size_t index_to = search_node(way_id, nodes, n_nodes);
 
-                Node *node = nodes + index_from;
+                add_successor(nodes, index_from, index_to);
 
-                size_t *tmp = (size_t *) realloc(node->successors, sizeof(size_t) * (node->n_successors + 1));
-                if(tmp == NULL) {
-                    fprintf(stderr, "Could not allocate enough memory for %zu successors to node %zu\n", node->n_successors + 1, node->id);
-                    return;
+                if(oneway == FALSE) {
+                    add_successor(nodes, index_to, index_from);
                 }
-                node->successors = tmp;
-
-                node->successors[node->n_successors] = index_to;
-                node->n_successors++;
 
                 index_from = index_to;
             }
@@ -117,4 +113,19 @@ void read_graph_from_file(FILE *f) {
             break;
         }
     }
+}
+
+void add_successor(Node *nodes, const size_t index_from, const size_t index_to) {
+    Node *node = nodes + index_from;
+
+    size_t *tmp = (size_t *) realloc(node->successors, sizeof(size_t) * (node->n_successors + 1));
+    if(tmp == NULL) {
+        fprintf(stderr, "Could not allocate enough memory for %zu successors to node %zu\n", node->n_successors + 1, node->id);
+        return;
+    }
+
+    node->successors = tmp;
+
+    node->successors[node->n_successors] = index_to;
+    node->n_successors++;
 }

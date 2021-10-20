@@ -8,6 +8,8 @@
 # Unignore makefile
 !Makefile
 
+astar.*
+
 *.out
 
 *.o

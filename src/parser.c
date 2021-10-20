@@ -37,7 +37,6 @@ void read_graph_from_file(FILE *f) {
         if(line[0] == 'n') {
             size_t pos = 5;
             size_t id = strtoull(line + pos, NULL, 10);
-            printf("id: %zu\n", id);
 
             short counter = 0;
             do {
@@ -94,12 +93,10 @@ void read_graph_from_file(FILE *f) {
             char *next_id = NULL;
             size_t way_id = strtoull(line + pos, &next_id, 10);
             size_t index_from = search_node(way_id, nodes, n_nodes);
-            fprintf(stderr, "id: %zu\n", way_id);
 
             while(next_id != NULL) {
                 size_t way_id = strtoull(next_id + 1, &next_id, 10);
                 size_t index_to = search_node(way_id, nodes, n_nodes);
-                fprintf(stderr, "id: %zu\n", way_id);
 
                 Node *node = nodes + index_from;
 

@@ -45,9 +45,9 @@ size_t read_graph_from_file(FILE *f, Node **nodes_vector) {
     getline(&line, &line_length, f);
 
     for(size_t iter = 0; iter < n_nodes; iter++) {
-        float percent = 100 * (iter + 1) / ((float) n_nodes);
-        printf("\rParsing nodes: %6.2f%%", percent);
-        fflush(stdout);
+        // float percent = 100 * (iter + 1) / ((float) n_nodes);
+        // printf("\rParsing nodes: %6.2f%%", percent);
+        // fflush(stdout);
 
         getline(&line, &line_length, f);
 
@@ -74,12 +74,12 @@ size_t read_graph_from_file(FILE *f, Node **nodes_vector) {
         };
     }
 
-    printf("\n");
+    // printf("\n");
 
     for(size_t iter = 0; iter < n_ways; iter++) {
-        float percent = 100 * (iter + 1) / ((float) n_ways);
-        printf("\rParsing ways:  %6.2f%%", percent);
-        fflush(stdout);
+        // float percent = 100 * (iter + 1) / ((float) n_ways);
+        // printf("\rParsing ways:  %6.2f%%", percent);
+        // fflush(stdout);
 
         getline(&line, &line_length, f);
 
@@ -122,7 +122,7 @@ size_t read_graph_from_file(FILE *f, Node **nodes_vector) {
         }
     }
 
-    printf("\n");
+    // printf("\n");
 
     free(line);
     return n_nodes;

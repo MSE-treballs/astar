@@ -95,9 +95,18 @@ void read_graph_from_file(FILE *f) {
             size_t way_id = strtoull(next_id + 1, &next_id, 10);
             size_t index_from = search_node(way_id, nodes, n_nodes);
 
+            while((*next_id != '\n') && (index_from == (size_t) -1)) {
+                way_id = strtoull(next_id + 1, &next_id, 10);
+                index_from = search_node(way_id, nodes, n_nodes);
+            }
+
             while(*next_id != '\n') {
                 way_id = strtoull(next_id + 1, &next_id, 10);
                 size_t index_to = search_node(way_id, nodes, n_nodes);
+
+                if(index_to == (size_t) -1) {
+                    continue;
+                }
 
                 add_successor(nodes, index_from, index_to);
                 if(oneway == FALSE) {
@@ -106,7 +115,6 @@ void read_graph_from_file(FILE *f) {
 
                 index_from = index_to;
             }
-
         } else {
             break;
         }

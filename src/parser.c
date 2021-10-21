@@ -20,6 +20,16 @@ size_t read_graph_from_file(FILE *f, Node **nodes_vector) {
     }
     printf("n_nodes=%zu\n", n_nodes);
 
+    size_t n_ways = 1;
+    while(getline(&line, &line_length, f) > 0) {
+        if(line[0] == 'w') {
+            n_ways++;
+        } else {
+            break;
+        }
+    }
+    printf("n_ways=%zu\n", n_ways);
+
     nodes = (Node *) malloc(sizeof(Node) * n_nodes);
     if(nodes == NULL) {
         fprintf(stderr, "Not enough memory to store nodes vector with %zu nodes\n", n_nodes);
@@ -34,71 +44,70 @@ size_t read_graph_from_file(FILE *f, Node **nodes_vector) {
     getline(&line, &line_length, f);
     getline(&line, &line_length, f);
 
-    size_t index = 0;
-    while(getline(&line, &line_length, f) > 0) {
-        if(line[0] == 'n') {
-            char *next_field = line + 5;
+    for(size_t iter = 0; iter < n_nodes; iter++) {
+        getline(&line, &line_length, f);
 
-            size_t id = strtoull(next_field, &next_field, 10);
-            next_field++;
+        char *next_field = line + 5;
 
-            for(size_t iter = 0; iter < 7; iter++) {
-                strsep(&next_field, FS);
-            }
+        size_t id = strtoull(next_field, &next_field, 10);
+        next_field++;
 
-            double lat = strtod(next_field, &next_field);
-            next_field++;
+        for(size_t foo = 0; foo < 7; foo++) {
+            strsep(&next_field, FS);
+        }
 
-            double lon = strtod(next_field, &next_field);
+        double lat = strtod(next_field, &next_field);
+        next_field++;
 
-            nodes[index] = (Node) {
-                .id = id,
+        double lon = strtod(next_field, &next_field);
+
+        nodes[iter] = (Node) {
+            .id = id,
                 .lat = lat,
                 .lon = lon,
                 .n_successors = 0,
                 .successors = NULL
-            };
+        };
+    }
 
-            index++;
-        } else if(line[0] == 'w') {
-            char *next_field = line + 4;
+    for(size_t iter = 0; iter < n_ways; iter++) {
+        getline(&line, &line_length, f);
 
-            for(size_t iter = 0; iter < 6; iter++) {
-                strsep(&next_field, FS);
-            }
+        char *next_field = line + 4;
 
-            Bool oneway = FALSE;
-            if(*next_field == 'o') {
-                oneway = TRUE;
-            }
-
+        for(size_t foo = 0; foo < 6; foo++) {
             strsep(&next_field, FS);
+        }
 
-            size_t way_id = strtoull(next_field + 1, &next_field, 10);
-            size_t index_from = search_node(way_id, nodes, n_nodes);
+        Bool oneway = FALSE;
+        if(*next_field == 'o') {
+            oneway = TRUE;
+        }
 
-            while((*next_field != '\n') && (index_from == (size_t) -1)) {
-                way_id = strtoull(next_field + 1, &next_field, 10);
-                index_from = search_node(way_id, nodes, n_nodes);
+        strsep(&next_field, FS);
+
+        size_t way_id = strtoull(next_field + 1, &next_field, 10);
+        size_t index_from = search_node(way_id, nodes, n_nodes);
+
+        while((*next_field != '\n') && (index_from == (size_t) -1)) {
+            way_id = strtoull(next_field + 1, &next_field, 10);
+            index_from = search_node(way_id, nodes, n_nodes);
+        }
+
+        while(*next_field != '\n') {
+            way_id = strtoull(next_field + 1, &next_field, 10);
+            size_t index_to = search_node(way_id, nodes, n_nodes);
+
+            if(index_to == (size_t) -1) {
+                continue;
             }
 
-            while(*next_field != '\n') {
-                way_id = strtoull(next_field + 1, &next_field, 10);
-                size_t index_to = search_node(way_id, nodes, n_nodes);
-
-                if(index_to == (size_t) -1) {
-                    continue;
-                }
-
-                add_successor(nodes + index_from, index_to);
-                if(oneway == FALSE) {
-                    add_successor(nodes + index_to, index_from);
-                }
-
-                index_from = index_to;
+            add_successor(nodes + index_from, index_to);
+            if(oneway == FALSE) {
+                add_successor(nodes + index_to, index_from);
             }
-        } else {
-            break;
+
+            index_from = index_to;
         }
     }
 

@@ -1,7 +1,6 @@
 #include "parser.h"
 
 size_t read_graph_from_file(FILE *f, Node **nodes_vector) {
-    Node *nodes = *nodes_vector;
     char *line = NULL;
     size_t line_length = 0;
 
@@ -30,12 +29,13 @@ size_t read_graph_from_file(FILE *f, Node **nodes_vector) {
     }
     printf("n_ways=%zu\n", n_ways);
 
-    nodes = (Node *) malloc(sizeof(Node) * n_nodes);
+    Node *nodes = (Node *) malloc(sizeof(Node) * n_nodes);
     if(nodes == NULL) {
         fprintf(stderr, "Not enough memory to store nodes vector with %zu nodes\n", n_nodes);
         free(line);
         return 0;
     }
+    *nodes_vector = nodes;
 
     rewind(f);
 

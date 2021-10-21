@@ -67,10 +67,10 @@ size_t read_graph_from_file(FILE *f, Node **nodes_vector) {
 
         nodes[iter] = (Node) {
             .id = id,
-                .lat = lat,
-                .lon = lon,
-                .n_successors = 0,
-                .successors = NULL
+            .lat = lat,
+            .lon = lon,
+            .n_successors = 0,
+            .successors = NULL
         };
     }
 
@@ -106,7 +106,6 @@ size_t read_graph_from_file(FILE *f, Node **nodes_vector) {
 
         while(*next_field != '\n') {
             node_id = strtoull(next_field + 1, &next_field, 10);
-
             size_t index_to = search_node(node_id, nodes, n_nodes);
 
             if(index_to == (size_t) -1) {

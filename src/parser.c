@@ -95,8 +95,9 @@ size_t read_graph_from_file(FILE *f, Node **nodes_vector) {
         }
 
         strsep(&next_field, FS);
+        strsep(&next_field, FS);
 
-        size_t node_id = strtoull(next_field + 1, &next_field, 10);
+        size_t node_id = strtoull(next_field, &next_field, 10);
         size_t index_from = search_node(node_id, nodes, n_nodes);
 
         while((*next_field != '\n') && (index_from == (size_t) -1)) {

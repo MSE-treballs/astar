@@ -2,7 +2,8 @@
 
 void add_successor(Node *nodes, const size_t index_from, const size_t index_to);
 
-void read_graph_from_file(FILE *f) {
+size_t read_graph_from_file(FILE *f, Node **nodes_vector) {
+    Node *nodes = *nodes_vector;
     char *line = NULL;
     size_t line_length = 0;
 
@@ -21,10 +22,11 @@ void read_graph_from_file(FILE *f) {
     }
     printf("n_nodes=%zu\n", n_nodes);
 
-    Node *nodes = (Node *) malloc(sizeof(Node) * n_nodes);
+    nodes = (Node *) malloc(sizeof(Node) * n_nodes);
     if(nodes == NULL) {
         fprintf(stderr, "Not enough memory to store nodes vector with %zu nodes\n", n_nodes);
-        return;
+        free(line);
+        return 0;
     }
 
     rewind(f);
@@ -119,6 +121,9 @@ void read_graph_from_file(FILE *f) {
             break;
         }
     }
+
+    free(line);
+    return n_nodes;
 }
 
 void add_successor(Node *nodes, const size_t index_from, const size_t index_to) {

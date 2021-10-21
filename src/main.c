@@ -7,7 +7,8 @@ int main(int argc, char *argv[]) {
        fprintf(stderr, "Could not find file \"%s\"\n", argv[1]);
    }
 
-   read_graph_from_file(f);
+   Node *nodes = NULL;
+   size_t n_nodes = read_graph_from_file(f, &nodes);
 
    return 0;
 }

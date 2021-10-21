@@ -37,26 +37,19 @@ size_t read_graph_from_file(FILE *f, Node **nodes_vector) {
     size_t index = 0;
     while(getline(&line, &line_length, f) > 0) {
         if(line[0] == 'n') {
-            size_t pos = 5;
-            size_t id = strtoull(line + pos, NULL, 10);
+            char *next_field = line + 5;
 
-            short counter = 0;
-            do {
-                do {
-                    pos++;
-                } while(line[pos] != '|');
-                counter++;
-            } while(counter < 8);
-            pos++;
+            size_t id = strtoull(next_field, &next_field, 10);
+            next_field++;
 
-            double lat = strtod(line + pos, NULL);
+            for(size_t iter = 0; iter < 7; iter++) {
+                strsep(&next_field, FS);
+            }
 
-            do {
-                pos++;
-            } while(line[pos] != '|');
-            pos++;
+            double lat = strtod(next_field, &next_field);
+            next_field++;
 
-            double lon = strtod(line + pos, NULL);
+            double lon = strtod(next_field, &next_field);
 
             nodes[index] = (Node) {
                 .id = id,
@@ -68,40 +61,29 @@ size_t read_graph_from_file(FILE *f, Node **nodes_vector) {
 
             index++;
         } else if(line[0] == 'w') {
-            size_t pos = 4;
-            short counter = 0;
-            do {
-                do {
-                    pos++;
-                } while(line[pos] != '|');
-                counter++;
-            } while(counter < 6);
-            pos++;
+            char *next_field = line + 4;
+
+            for(size_t iter = 0; iter < 6; iter++) {
+                strsep(&next_field, FS);
+            }
 
             Bool oneway = FALSE;
-            if(line[pos] == 'o') {
+            if(*next_field == 'o') {
                 oneway = TRUE;
             }
 
-            do {
-                do {
-                    pos++;
-                } while(line[pos] != '|');
-                counter++;
-            } while(counter < 7);
+            strsep(&next_field, FS);
 
-            char *next_id = line + pos;
-
-            size_t way_id = strtoull(next_id + 1, &next_id, 10);
+            size_t way_id = strtoull(next_field + 1, &next_field, 10);
             size_t index_from = search_node(way_id, nodes, n_nodes);
 
-            while((*next_id != '\n') && (index_from == (size_t) -1)) {
-                way_id = strtoull(next_id + 1, &next_id, 10);
+            while((*next_field != '\n') && (index_from == (size_t) -1)) {
+                way_id = strtoull(next_field + 1, &next_field, 10);
                 index_from = search_node(way_id, nodes, n_nodes);
             }
 
-            while(*next_id != '\n') {
-                way_id = strtoull(next_id + 1, &next_id, 10);
+            while(*next_field != '\n') {
+                way_id = strtoull(next_field + 1, &next_field, 10);
                 size_t index_to = search_node(way_id, nodes, n_nodes);
 
                 if(index_to == (size_t) -1) {

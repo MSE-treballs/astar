@@ -5,9 +5,19 @@ void printNode(const Node *node) {
 }
 
 size_t search_node(const size_t id, const Node *nodes, const size_t n_nodes) {
-    for(size_t iter = 0; iter < n_nodes; iter++) {
-        if(nodes[iter].id == id) {
-            return iter;
+    size_t low = 0;
+    size_t high = n_nodes - 1;
+
+    size_t pivot = -1;
+
+    while(low <= high) {
+        pivot = (high + low) / 2;
+        if(nodes[pivot].id == id) {
+            return pivot;
+        } else if(nodes[pivot].id < id) {
+            low = pivot + 1;
+        } else {
+            high = pivot - 1;
         }
     }
 

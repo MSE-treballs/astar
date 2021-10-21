@@ -1,7 +1,5 @@
 #include "parser.h"
 
-void add_successor(Node *nodes, const size_t index_from, const size_t index_to);
-
 size_t read_graph_from_file(FILE *f, Node **nodes_vector) {
     Node *nodes = *nodes_vector;
     char *line = NULL;
@@ -110,9 +108,9 @@ size_t read_graph_from_file(FILE *f, Node **nodes_vector) {
                     continue;
                 }
 
-                add_successor(nodes, index_from, index_to);
+                add_successor(nodes + index_from, index_to);
                 if(oneway == FALSE) {
-                    add_successor(nodes, index_to, index_from);
+                    add_successor(nodes + index_to, index_from);
                 }
 
                 index_from = index_to;
@@ -124,19 +122,4 @@ size_t read_graph_from_file(FILE *f, Node **nodes_vector) {
 
     free(line);
     return n_nodes;
-}
-
-void add_successor(Node *nodes, const size_t index_from, const size_t index_to) {
-    Node *node = nodes + index_from;
-
-    size_t *tmp = (size_t *) realloc(node->successors, sizeof(size_t) * (node->n_successors + 1));
-    if(tmp == NULL) {
-        fprintf(stderr, "Could not allocate enough memory for %zu successors to node %zu\n", node->n_successors + 1, node->id);
-        return;
-    }
-
-    node->successors = tmp;
-
-    node->successors[node->n_successors] = index_to;
-    node->n_successors++;
 }

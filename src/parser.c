@@ -88,8 +88,7 @@ void read_graph_from_file(FILE *f) {
                     pos++;
                 } while(line[pos] != '|');
                 counter++;
-            } while(counter < 2);
-            pos++;
+            } while(counter < 7);
 
             char *next_id = line + pos;
 

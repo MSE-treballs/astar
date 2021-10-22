@@ -1,7 +1,6 @@
 #include "parser.h"
 
 size_t read_graph_from_file(FILE *f, Node **nodes_vector) {
-    Node *nodes = *nodes_vector;
     char *line = NULL;
     size_t line_length = 0;
 
@@ -30,12 +29,13 @@ size_t read_graph_from_file(FILE *f, Node **nodes_vector) {
     }
     printf("n_ways=%zu\n", n_ways);
 
-    nodes = (Node *) malloc(sizeof(Node) * n_nodes);
+    Node *nodes = (Node *) malloc(sizeof(Node) * n_nodes);
     if(nodes == NULL) {
         fprintf(stderr, "Not enough memory to store nodes vector with %zu nodes\n", n_nodes);
         free(line);
         return 0;
     }
+    *nodes_vector = nodes;
 
     rewind(f);
 
@@ -45,9 +45,9 @@ size_t read_graph_from_file(FILE *f, Node **nodes_vector) {
     getline(&line, &line_length, f);
 
     for(size_t iter = 0; iter < n_nodes; iter++) {
-        float percent = 100 * (iter + 1) / ((float) n_nodes);
-        printf("\rParsing nodes: %6.2f%%", percent);
-        fflush(stdout);
+        // float percent = 100 * (iter + 1) / ((float) n_nodes);
+        // printf("\rParsing nodes: %6.2f%%", percent);
+        // fflush(stdout);
 
         getline(&line, &line_length, f);
 
@@ -74,12 +74,12 @@ size_t read_graph_from_file(FILE *f, Node **nodes_vector) {
         };
     }
 
-    printf("\n");
+    // printf("\n");
 
     for(size_t iter = 0; iter < n_ways; iter++) {
-        float percent = 100 * (iter + 1) / ((float) n_ways);
-        printf("\rParsing ways:  %6.2f%%", percent);
-        fflush(stdout);
+        // float percent = 100 * (iter + 1) / ((float) n_ways);
+        // printf("\rParsing ways:  %6.2f%%", percent);
+        // fflush(stdout);
 
         getline(&line, &line_length, f);
 
@@ -122,7 +122,7 @@ size_t read_graph_from_file(FILE *f, Node **nodes_vector) {
         }
     }
 
-    printf("\n");
+    // printf("\n");
 
     free(line);
     return n_nodes;

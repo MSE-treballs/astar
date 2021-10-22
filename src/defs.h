@@ -1,5 +1,2 @@
-#ifndef H_GUARD_DEFS
-#define H_GUARD_DEFS
+#pragma once
 typedef enum {FALSE, TRUE} Bool;
-
-#endif

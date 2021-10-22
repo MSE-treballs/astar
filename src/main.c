@@ -2,9 +2,15 @@
 #include "parser.h"
 
 int main(int argc, char *argv[]) {
+    if(argc != 2) {
+        fprintf(stderr, "Usage:\n\t%s <map data>\n", argv[0]);
+        return 1;
+    }
+
     FILE *f = fopen(argv[1], "r");
     if(f == NULL) {
         fprintf(stderr, "Could not find file \"%s\"\n", argv[1]);
+        return 2;
     }
 
     Node *nodes = NULL;

@@ -1,14 +1,18 @@
 #pragma once
 #include <stdio.h>
 #include <stdlib.h>
+#include "defs.h"
 
 typedef struct Node Node;
 typedef struct Node {
     size_t id;
     double lat;
     double lon;
+    Bool open;
+    double distance;
+    Node *parent;
     size_t n_successors;
-    size_t *successors;
+    Node **successors;
 } Node;
 
 void printNode(const Node *node);

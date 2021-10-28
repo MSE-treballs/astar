@@ -12,7 +12,7 @@ typedef struct Node {
     Bool open;
     double distance;
     Node *parent;
-    size_t n_successors;
+    short n_successors;
     Node **successors;
 } Node;
 

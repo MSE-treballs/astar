@@ -16,14 +16,14 @@ PriorityQueue *push(PriorityQueue **queue, Node *node, const double score) {
         return aux;
     }
 
-    if((*queue)->score < score) {
+    if((*queue)->score > score) {
         aux->next = *queue;
         *queue = aux;
         return aux;
     }
 
     PriorityQueue *tmp = *queue;
-    while((tmp->next != NULL) && (score < tmp->next->score)) {
+    while((tmp->next != NULL) && (score > tmp->next->score)) {
         tmp = tmp->next;
     }
 

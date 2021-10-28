@@ -1,4 +1,8 @@
 #include "parser.h"
+#include <values.h>
+
+// python -c "import math; print(math.pi / 180)"
+const double DEG_TO_RAD = 0.017453292519943295;
 
 size_t read_graph_from_file(FILE *f, Node **nodes_vector) {
     char *line = NULL;
@@ -67,10 +71,13 @@ size_t read_graph_from_file(FILE *f, Node **nodes_vector) {
 
         nodes[iter] = (Node) {
             .id = id,
-            .lat = lat,
-            .lon = lon,
+            .lat = lat * DEG_TO_RAD,
+            .lon = lon * DEG_TO_RAD,
+            .open = FALSE,
+            .distance = MAXFLOAT,
+            .parent = NULL,
             .n_successors = 0,
-            .successors = NULL
+            .successors = NULL,
         };
     }
 

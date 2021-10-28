@@ -1,6 +1,7 @@
 #pragma once
 #include <stdio.h>
 #include <stdlib.h>
+#include <values.h>
 #include "defs.h"
 
 typedef struct Node Node;

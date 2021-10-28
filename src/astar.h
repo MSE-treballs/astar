@@ -4,3 +4,5 @@
 #include "metrics.h"
 
 typedef enum {OPEN, CLOSED} Queue;
+
+Bool astar(Node *start, Node *goal);

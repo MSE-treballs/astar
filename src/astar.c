@@ -1,6 +1,6 @@
 #include "astar.h"
 
-Bool astar(Node *nodes, const size_t n_nodes, Node *start, const Node *goal) {
+Bool astar(Node *start, Node *goal) {
     PriorityQueue *queue = NULL;
 
     start->distance = 0;

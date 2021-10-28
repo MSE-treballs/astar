@@ -21,7 +21,7 @@ Bool astar(Node *nodes, const size_t n_nodes, Node *start, const Node *goal) {
                 const double score = distance + heuristic;
 
                 successor->distance = distance;
-                successor->parent = nodes;
+                successor->parent = current;
 
                 if(successor->open == TRUE) {
                     replace(&queue, successor, score);

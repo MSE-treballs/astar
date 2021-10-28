@@ -108,9 +108,9 @@ size_t read_graph_from_file(FILE *f, Node **nodes_vector) {
                 continue;
             }
 
-            add_successor(nodes + index_from, index_to);
+            add_successor(nodes + index_from, nodes + index_to);
             if(oneway == FALSE) {
-                add_successor(nodes + index_to, index_from);
+                add_successor(nodes + index_to, nodes + index_from);
             }
 
             index_from = index_to;

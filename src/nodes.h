@@ -18,4 +18,4 @@ typedef struct Node {
 
 void printNode(const Node *node);
 size_t search_node(const size_t id, const Node *nodes, const size_t n_nodes);
-void add_successor(Node *node, const size_t index_to);
+void add_successor(Node *node, Node *successor);

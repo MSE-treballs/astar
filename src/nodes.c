@@ -1,7 +1,14 @@
 #include "nodes.h"
 
-void printNode(const Node *node) {
-    printf("node: %zu, lat: %lf lon: %lf n_successors: %zu\n", node->id, node->lat, node->lon, node->n_successors);
+// python -c "import math; print(180 / math.pi)"
+const double RAD_TO_DEG = 57.29577951308232;
+
+void print_node(const Node *node) {
+    printf("node: %zu %lf %lf distance %lf\n", node->id, node->lat * RAD_TO_DEG, node->lon * RAD_TO_DEG, node->distance);
+}
+
+void print_node_coords(const Node *node) {
+    printf("%lf,%lf,red,circle,""\n", node->lat * RAD_TO_DEG, node->lon * RAD_TO_DEG);
 }
 
 size_t search_node(const size_t id, const Node *nodes, const size_t n_nodes) {

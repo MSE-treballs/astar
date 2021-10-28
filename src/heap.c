@@ -2,6 +2,8 @@
 #include <stdio.h>
 
 PriorityQueue *push(PriorityQueue **queue, Node *node, const double score) {
+    node->open = FALSE;
+
     PriorityQueue *aux = (PriorityQueue *) malloc(sizeof(PriorityQueue));
     *aux = (PriorityQueue) {
         .next = NULL,
@@ -35,6 +37,7 @@ PriorityQueue *push(PriorityQueue **queue, Node *node, const double score) {
 
 Node *pop(PriorityQueue **queue) {
     Node *node = (*queue)->node;
+    node->open = TRUE;
 
     PriorityQueue *tmp = *queue;
     *queue = (*queue)->next;

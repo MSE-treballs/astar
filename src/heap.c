@@ -46,18 +46,6 @@ Node *pop(PriorityQueue **queue) {
     return node;
 }
 
-void replace(PriorityQueue **queue, Node *node, const double score) {
-    PriorityQueue *aux = push(queue, node, score);
-
-    while(aux->next->node != node) {
-        aux = aux->next;
-    }
-
-    PriorityQueue *tmp = aux->next;
-    aux->next = tmp->next;
-    free(tmp);
-}
-
 Bool is_empty(PriorityQueue *queue) {
     return queue == NULL;
 }

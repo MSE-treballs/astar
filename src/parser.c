@@ -1,4 +1,8 @@
 #include "parser.h"
+#include <values.h>
+
+// python -c "import math; print(math.pi / 180)"
+const double DEG_TO_RAD = 0.017453292519943295;
 
 size_t read_graph_from_file(FILE *f, Node **nodes_vector) {
     char *line = NULL;
@@ -17,7 +21,6 @@ size_t read_graph_from_file(FILE *f, Node **nodes_vector) {
             break;
         }
     }
-    printf("n_nodes=%zu\n", n_nodes);
 
     size_t n_ways = 1;
     while(getline(&line, &line_length, f) > 0) {
@@ -27,7 +30,6 @@ size_t read_graph_from_file(FILE *f, Node **nodes_vector) {
             break;
         }
     }
-    printf("n_ways=%zu\n", n_ways);
 
     Node *nodes = (Node *) malloc(sizeof(Node) * n_nodes);
     if(nodes == NULL) {
@@ -45,10 +47,6 @@ size_t read_graph_from_file(FILE *f, Node **nodes_vector) {
     getline(&line, &line_length, f);
 
     for(size_t iter = 0; iter < n_nodes; iter++) {
-        // float percent = 100 * (iter + 1) / ((float) n_nodes);
-        // printf("\rParsing nodes: %6.2f%%", percent);
-        // fflush(stdout);
-
         getline(&line, &line_length, f);
 
         char *next_field = line + 5;
@@ -67,20 +65,17 @@ size_t read_graph_from_file(FILE *f, Node **nodes_vector) {
 
         nodes[iter] = (Node) {
             .id = id,
-            .lat = lat,
-            .lon = lon,
+            .lat = lat * DEG_TO_RAD,
+            .lon = lon * DEG_TO_RAD,
+            .open = FALSE,
+            .distance = MAXFLOAT,
+            .parent = NULL,
             .n_successors = 0,
-            .successors = NULL
+            .successors = NULL,
         };
     }
 
-    // printf("\n");
-
     for(size_t iter = 0; iter < n_ways; iter++) {
-        // float percent = 100 * (iter + 1) / ((float) n_ways);
-        // printf("\rParsing ways:  %6.2f%%", percent);
-        // fflush(stdout);
-
         getline(&line, &line_length, f);
 
         char *next_field = line + 4;
@@ -113,16 +108,14 @@ size_t read_graph_from_file(FILE *f, Node **nodes_vector) {
                 continue;
             }
 
-            add_successor(nodes + index_from, index_to);
+            add_successor(nodes + index_from, nodes + index_to);
             if(oneway == FALSE) {
-                add_successor(nodes + index_to, index_from);
+                add_successor(nodes + index_to, nodes + index_from);
             }
 
             index_from = index_to;
         }
     }
-
-    // printf("\n");
 
     free(line);
     return n_nodes;

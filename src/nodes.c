@@ -1,7 +1,14 @@
 #include "nodes.h"
 
-void printNode(const Node *node) {
-    printf("node: %zu, lat: %lf lon: %lf n_successors: %zu\n", node->id, node->lat, node->lon, node->n_successors);
+// python -c "import math; print(180 / math.pi)"
+const double RAD_TO_DEG = 57.29577951308232;
+
+void print_node(const Node *node) {
+    printf("node: %zu %lf %lf distance %lf\n", node->id, node->lat * RAD_TO_DEG, node->lon * RAD_TO_DEG, node->distance);
+}
+
+void print_node_coords(const Node *node) {
+    printf("%lf,%lf,red,circle,""\n", node->lat * RAD_TO_DEG, node->lon * RAD_TO_DEG);
 }
 
 size_t search_node(const size_t id, const Node *nodes, const size_t n_nodes) {
@@ -24,21 +31,21 @@ size_t search_node(const size_t id, const Node *nodes, const size_t n_nodes) {
     return -1;
 }
 
-void add_successor(Node *node, const size_t index_to) {
+void add_successor(Node *node, Node *successor) {
     for(short iter = 0; iter < node->n_successors; iter++) {
-        if(node->successors[iter] == index_to) {
+        if(node->successors[iter] == successor) {
             return;
         }
     }
 
-    size_t *tmp = (size_t *) realloc(node->successors, sizeof(size_t) * (node->n_successors + 1));
+    Node **tmp = (Node **) realloc(node->successors, sizeof(Node *) * (node->n_successors + 1));
     if(tmp == NULL) {
-        fprintf(stderr, "Could not allocate enough memory for %zu successors to node %zu\n", node->n_successors + 1, node->id);
+        fprintf(stderr, "Could not allocate enough memory for %d successors to node %zu\n", node->n_successors + 1, node->id);
         return;
     }
 
     node->successors = tmp;
 
-    node->successors[node->n_successors] = index_to;
+    node->successors[node->n_successors] = successor;
     node->n_successors++;
 }

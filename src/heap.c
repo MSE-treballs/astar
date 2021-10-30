@@ -1,10 +1,15 @@
 #include "heap.h"
-#include <stdio.h>
 
 PriorityQueue *push(PriorityQueue **queue, Node *node, const double score) {
+    ASSERT(node != NULL);
+    ASSERT(queue != NULL);
+    ASSERT(score >= 0);
+
     node->open = FALSE;
 
     PriorityQueue *aux = (PriorityQueue *) malloc(sizeof(PriorityQueue));
+    ASSERT(aux != NULL);
+
     *aux = (PriorityQueue) {
         .next = NULL,
         .node = node,
@@ -36,6 +41,9 @@ PriorityQueue *push(PriorityQueue **queue, Node *node, const double score) {
 }
 
 Node *pop(PriorityQueue **queue) {
+    ASSERT(queue != NULL);
+    ASSERT((*queue) != NULL);
+
     Node *node = (*queue)->node;
     node->open = TRUE;
 
@@ -47,6 +55,10 @@ Node *pop(PriorityQueue **queue) {
 }
 
 void replace(PriorityQueue **queue, Node *node, const double score) {
+    ASSERT(node != NULL);
+    ASSERT(queue != NULL);
+    ASSERT(score >= 0);
+
     PriorityQueue *aux = push(queue, node, score);
 
     while(aux->next->node != node) {

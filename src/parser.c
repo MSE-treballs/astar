@@ -5,6 +5,9 @@
 const double DEG_TO_RAD = 0.017453292519943295;
 
 size_t read_graph_from_file(FILE *f, Node **nodes_vector) {
+    ASSERT(f != NULL);
+    ASSERT(nodes_vector != NULL);
+
     char *line = NULL;
     size_t line_length = 0;
 

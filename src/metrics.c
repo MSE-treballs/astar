@@ -3,6 +3,9 @@
 const double EARTH_RADIOUS = 6371000;
 
 double get_distance(const Node *from, const Node *to) {
+    ASSERT(from != NULL);
+    ASSERT(to != NULL);
+
     const double lat_from = from->lat;
     const double lat_to = to->lat;
     const double lon_from = from->lon;
@@ -12,5 +15,8 @@ double get_distance(const Node *from, const Node *to) {
 }
 
 double get_heuristic(const Node *from, const Node *to) {
+    ASSERT(from != NULL);
+    ASSERT(to != NULL);
+
     return get_distance(from, to);
 }

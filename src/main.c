@@ -42,6 +42,7 @@ int main(int argc, char *argv[]) {
         pv = ppv;
     }
 
+    printf("lat,lon\n");
     tmp = from;
     while(tmp != NULL) {
         print_node_coords(tmp);

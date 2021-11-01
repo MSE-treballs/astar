@@ -12,7 +12,7 @@ void print_node(const Node *node) {
 void print_node_coords(const Node *node) {
     ASSERT(node != NULL);
 
-    printf("%lf,%lf,red,circle,""\n", node->lat * RAD_TO_DEG, node->lon * RAD_TO_DEG);
+    printf("%lf,%lf\n", node->lat * RAD_TO_DEG, node->lon * RAD_TO_DEG);
 }
 
 size_t search_node(const size_t id, const Node *nodes, const size_t n_nodes) {

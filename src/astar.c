@@ -26,9 +26,11 @@ Bool astar(Node *start, Node *goal) {
                 successor->distance = distance;
                 successor->parent = current;
 
-                ASSERT(successor->open == FALSE);
-
-                push(&queue, successor, score);
+                if(successor->open == TRUE) {
+                    replace(&queue, successor, score);
+                } else {
+                    push(&queue, successor, score);
+                }
             }
         }
     }

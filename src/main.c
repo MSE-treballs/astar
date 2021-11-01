@@ -16,6 +16,8 @@ int main(int argc, char *argv[]) {
     Node *nodes = NULL;
     read_graph_from_file(f, &nodes);
 
+    fclose(f);
+
     Node *from = nodes + 729630;
     Node *to = nodes + 318042;
 

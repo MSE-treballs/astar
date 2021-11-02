@@ -13,9 +13,9 @@ double get_distance(const Node *from, const Node *to) {
 
     const double result = sin(lat_from)*sin(lat_to) + cos(lat_from)*cos(lat_to)*cos(lon_to-lon_from);
 
-    if(result > 1) {
+    if(result >= 1) {
         return 0;
-    } else if(result < -1) {
+    } else if(result <= -1) {
         return M_PI * EARTH_RADIOUS;
     }
 

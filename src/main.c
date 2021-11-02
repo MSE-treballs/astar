@@ -22,6 +22,9 @@ int main(int argc, char *argv[]) {
     Node *from = nodes + 729630;
     Node *to = nodes + 318042;
 
+    from = (Node *) nodes + 519833;
+    to = (Node *) nodes + 461929;
+
     const clock_t start_time = clock();
     const Bool result = astar(from, to);
     const clock_t end_time = clock();

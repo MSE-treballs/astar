@@ -1,3 +1,4 @@
+#include <time.h>
 #include "astar.h"
 #include "parser.h"
 
@@ -21,7 +22,12 @@ int main(int argc, char *argv[]) {
     Node *from = nodes + 729630;
     Node *to = nodes + 318042;
 
+    const clock_t start_time = clock();
     const Bool result = astar(from, to);
+    const clock_t end_time = clock();
+
+    const double elapsed_time = ((double) (end_time - start_time)) / ((double) CLOCKS_PER_SEC);
+    fprintf(stderr, "A* algorithm run in %lf seconds\n", elapsed_time);
 
     if(result == FALSE) {
         fprintf(stderr, "Could not find path between %zu and %zu\n", from->id, to->id);

@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <values.h>
 #include "nodes.h"
 #include "defs.h"
 

@@ -11,7 +11,15 @@ double get_distance(const Node *from, const Node *to) {
     const double lon_from = from->lon;
     const double lon_to = to->lon;
 
-    return acos(sin(lat_from)*sin(lat_to) + cos(lat_from)*cos(lat_to)*cos(lon_to-lon_from)) * EARTH_RADIOUS;
+    const double result = sin(lat_from)*sin(lat_to) + cos(lat_from)*cos(lat_to)*cos(lon_to-lon_from);
+
+    if(result > 1) {
+        return 0;
+    } else if(result < -1) {
+        return M_PI;
+    }
+
+    return acos(result) * EARTH_RADIOUS;
 }
 
 double get_heuristic(const Node *from, const Node *to) {

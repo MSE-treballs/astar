@@ -16,7 +16,7 @@ double get_distance(const Node *from, const Node *to) {
     if(result > 1) {
         return 0;
     } else if(result < -1) {
-        return M_PI;
+        return M_PI * EARTH_RADIOUS;
     }
 
     return acos(result) * EARTH_RADIOUS;

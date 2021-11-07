@@ -4,7 +4,7 @@ EXECUTS = astar astar.debug astar.profile
 
 SOURCES = $(wildcard $(SRCDIR)*.c)
 DEPENDS	= $(wildcard $(SRCDIR)*.h)
-OBJECTS = $(patsubst $(SRCDIR)%,$(OBJDIR)%,$(SOURCES:.c=.o))
+OBJECTS = $(patsubst $(SRCDIR)%,$(OBJDIR)%,$(SOURCES:.c=.o)) $(wildcard $(OBJDIR)*.o)
 
 CC = gcc
 CFLAGS = -Wall -Wextra -Wshadow -pedantic -Ofast

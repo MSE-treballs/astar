@@ -7,12 +7,13 @@ DEPENDS	= $(wildcard $(SRCDIR)*.h)
 OBJECTS = $(patsubst $(SRCDIR)%,$(OBJDIR)%,$(SOURCES:.c=.o))
 
 CC = gcc
-CFLAGS = -Wall -Wextra -Wshadow -pedantic -Ofast -lm
+CFLAGS = -Wall -Wextra -Wshadow -pedantic -Ofast
+LFLAGS = -lm
 CDEBUGFLAGS = -D DEBUG -ggdb -g3 -O0
 CPROFILEFLAGS = -pg
 
 astar: $(OBJECTS)
-	$(CC) $(CFLAGS) -o $@ $^
+	$(CC) $(CFLAGS) -o $@ $^ $(LFLAGS)
 
 $(OBJDIR)%.o: $(SRCDIR)%.c $(DEPENDS)
 	$(CC) $(CFLAGS) -c $< -o $@
@@ -31,11 +32,11 @@ all: $(EXECUTS)
 debug: astar.debug
 
 astar.debug: $(SOURCES) $(DEPENDS)
-	$(CC) $(CFLAGS) $(CDEBUGFLAGS) -o $@ $(SOURCES)
+	$(CC) $(CFLAGS) $(CDEBUGFLAGS) -o $@ $(SOURCES) $(LFLAGS)
 
 .PHONY: profile
 profile: astar.profile
 
 astar.profile: $(SOURCES) $(DEPENDS)
-	$(CC) $(CFLAGS) $(CPROFILEFLAGS) -o $@ $(SOURCES)
+	$(CC) $(CFLAGS) $(CPROFILEFLAGS) -o $@ $(SOURCES) $(LFLAGS)
 

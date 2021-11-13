@@ -69,7 +69,7 @@ size_t read_graph_from_file(FILE *f, Node **nodes_vector) {
             .id = id,
             .lat = lat * DEG_TO_RAD,
             .lon = lon * DEG_TO_RAD,
-            .open = FALSE,
+            .open = 0, // Temporarily used as counter for number of parents
             .distance = MAXDOUBLE,
             .parent = NULL,
             .n_successors = 0,
@@ -111,12 +111,18 @@ size_t read_graph_from_file(FILE *f, Node **nodes_vector) {
             }
 
             add_successor(nodes + index_from, nodes + index_to);
+            nodes[index_to].open += 1;
             if(oneway == FALSE) {
                 add_successor(nodes + index_to, nodes + index_from);
+                nodes[index_from].open += 1;
             }
 
             index_from = index_to;
         }
+    }
+
+    for(size_t iter = 0; iter < n_nodes; iter++) {
+        nodes[iter].open = FALSE;
     }
 
     free(line);

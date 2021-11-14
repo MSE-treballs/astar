@@ -59,3 +59,30 @@ void add_successor(Node *node, Node *successor) {
     node->successors[node->n_successors] = successor;
     node->n_successors++;
 }
+
+void add_shortcut(Node *root, Node *successor) {
+    ASSERT(root != NULL);
+    ASSERT(successor != NULL);
+    ASSERT((successor->n_successors == 1) && (successor->open == 1));
+
+    double cost = get_distance(root, successor);
+    while((successor->n_successors == 1) && (successor->successors[0]->open == 1)) {
+        cost += get_distance(successor, successor->successors[0]);
+        successor->successors[0]->parent = successor;
+        successor = successor->successors[0];
+    }
+
+    Shortcut *tmp = (Shortcut *) realloc(root->shortcuts, sizeof(Shortcut) * (root->n_shortcuts + 1));
+    if(tmp == NULL) {
+        fprintf(stderr, "Could not allocate enough memory for %d shortcuts to node %zu\n", root->n_shortcuts + 1, root->id);
+        return;
+    }
+
+    root->shortcuts = tmp;
+
+    root->shortcuts[root->n_shortcuts] = (Shortcut) {
+        .cost = cost,
+        .end = successor,
+    };
+    root->n_shortcuts++;
+}

@@ -114,6 +114,10 @@ size_t read_graph_from_file(FILE *f, Node **nodes_vector) {
                 continue;
             }
 
+            if(index_to == index_from) {
+                continue;
+            }
+
             add_successor(nodes + index_from, nodes + index_to);
             nodes[index_to].open += 1;
             if(oneway == FALSE) {

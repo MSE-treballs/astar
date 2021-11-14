@@ -58,12 +58,29 @@ void replace(PriorityQueue **queue, Node *node, const double score) {
     ASSERT(node != NULL);
     ASSERT(score >= 0);
 
-    PriorityQueue *insertion_point = *queue;
-
-    if((*queue)->score > score) { // TODO
-        insertion_point->score = score;
+    if((*queue)->node == node) {
+        (*queue)->score = score;
         return;
     }
+
+    if((*queue)->score > score) {
+        PriorityQueue *removal_point = *queue;
+
+        while(removal_point->next->node != node) {
+            removal_point = removal_point->next;
+        }
+
+        PriorityQueue *pivot = removal_point->next;
+        pivot->score = score;
+
+        removal_point->next = removal_point->next->next;
+        pivot->next = *queue;
+
+        *queue = pivot;
+        return;
+    }
+
+    PriorityQueue *insertion_point = *queue;
 
     while(insertion_point->next->score < score) {
         insertion_point = insertion_point->next;
@@ -78,7 +95,7 @@ void replace(PriorityQueue **queue, Node *node, const double score) {
     PriorityQueue *pivot = removal_point->next;
     pivot->score = score;
 
-    removal_point->next = pivot->next;
+    removal_point->next = removal_point->next->next;
     pivot->next = insertion_point->next;
     insertion_point->next = pivot;
 }

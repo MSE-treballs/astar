@@ -74,6 +74,8 @@ size_t read_graph_from_file(FILE *f, Node **nodes_vector) {
             .parent = NULL,
             .n_successors = 0,
             .successors = NULL,
+            .n_shortcuts = 0,
+            .shortcuts = NULL,
         };
     }
 

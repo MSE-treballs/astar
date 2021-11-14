@@ -5,6 +5,12 @@
 #include "defs.h"
 
 typedef struct Node Node;
+
+typedef struct {
+    double cost;
+    Node *end;
+} Shortcut;
+
 typedef struct Node {
     size_t id;
     double lat;
@@ -14,6 +20,8 @@ typedef struct Node {
     Node *parent;
     short n_successors;
     Node **successors;
+    short n_shortcuts;
+    Shortcut *shortcuts;
 } Node;
 
 void print_node(const Node *node);

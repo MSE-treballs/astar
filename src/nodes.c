@@ -64,7 +64,8 @@ void add_successor(Node *node, Node *successor) {
 void add_shortcut(Node *root, Node *successor) {
     ASSERT(root != NULL);
     ASSERT(successor != NULL);
-    ASSERT((successor->n_successors == 1) && (successor->open == 1));
+    ASSERT(successor->open == 1);
+    ASSERT(successor->n_successors == 1);
 
     short unsigned length = 0;
     double cost = get_distance(root, successor);

@@ -70,6 +70,9 @@ void add_shortcut(Node *root, Node *successor) {
     short unsigned length = 0;
     double cost = get_distance(root, successor);
     while((successor->n_successors == 1) && (successor->successors[0]->open == 1)) {
+        if(successor == root) {
+            return;
+        }
         cost += get_distance(successor, successor->successors[0]);
         successor->successors[0]->parent = successor;
         successor = successor->successors[0];

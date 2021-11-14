@@ -60,16 +60,22 @@ void add_successor(Node *node, Node *successor) {
     node->n_successors++;
 }
 
+#define MIN_SHORTCUT_LENGTH 3
 void add_shortcut(Node *root, Node *successor) {
     ASSERT(root != NULL);
     ASSERT(successor != NULL);
     ASSERT((successor->n_successors == 1) && (successor->open == 1));
 
+    short unsigned length = 0;
     double cost = get_distance(root, successor);
     while((successor->n_successors == 1) && (successor->successors[0]->open == 1)) {
         cost += get_distance(successor, successor->successors[0]);
         successor->successors[0]->parent = successor;
         successor = successor->successors[0];
+        length++;
+    }
+    if(length <= MIN_SHORTCUT_LENGTH) {
+        return;
     }
 
     Shortcut *tmp = (Shortcut *) realloc(root->shortcuts, sizeof(Shortcut) * (root->n_shortcuts + 1));

@@ -1,4 +1,4 @@
-#include "heap.h"
+#include "priority-queue.h"
 
 PriorityQueue *push(PriorityQueue **const queue, Node *const node, const double score) {
     ASSERT(node != NULL);

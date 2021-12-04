@@ -1,5 +1,5 @@
 #include "defs.h"
-#include "heap.h"
+#include "priority-queue.h"
 #include "nodes.h"
 #include "metrics.h"
 

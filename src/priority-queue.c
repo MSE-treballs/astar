@@ -1,6 +1,6 @@
 #include "priority-queue.h"
 
-PriorityQueue *push(PriorityQueue **const queue, Node *const node, const double score) {
+void push(PriorityQueue **const queue, Node *const node, const double score) {
     ASSERT(node != NULL);
     ASSERT(queue != NULL);
     ASSERT(score >= 0);
@@ -18,13 +18,13 @@ PriorityQueue *push(PriorityQueue **const queue, Node *const node, const double 
 
     if(*queue == NULL) {
         *queue = aux;
-        return aux;
+        return;
     }
 
     if((*queue)->score > score) {
         aux->next = *queue;
         *queue = aux;
-        return aux;
+        return;
     }
 
     PriorityQueue *tmp = *queue;
@@ -34,8 +34,6 @@ PriorityQueue *push(PriorityQueue **const queue, Node *const node, const double 
 
     aux->next = tmp->next;
     tmp->next = aux;
-
-    return aux;
 }
 
 Node *pop(PriorityQueue **const queue) {

@@ -9,7 +9,7 @@ typedef struct PriorityQueue {
     double score;
 } PriorityQueue;
 
-PriorityQueue *push(PriorityQueue **const queue, Node *const node, const double score);
+void push(PriorityQueue **const queue, Node *const node, const double score);
 Node *pop(PriorityQueue **queue);
 void replace(PriorityQueue **const queue, Node *const node, const double score);
 Bool is_empty(const PriorityQueue *const queue);

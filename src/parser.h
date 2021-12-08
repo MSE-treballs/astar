@@ -8,4 +8,4 @@
 
 #define FS "|"
 
-size_t read_graph_from_file(FILE *f, Node **nodes);
+size_t read_graph_from_file(FILE *const f, Node **const nodes);

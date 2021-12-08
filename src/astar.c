@@ -1,6 +1,12 @@
 #include "astar.h"
 
-Bool astar(Node *start, Node *goal) {
+Bool is_suitable_for_skip(const Node *const node) {
+    return (node->n_successors == 1)
+        && (node->n_parents == 1)
+        && (node->successors[0]->parent == NULL);
+}
+
+Bool astar(Node *const start, const Node *const goal) {
     ASSERT(start != NULL);
     ASSERT(goal != NULL);
 
@@ -16,16 +22,25 @@ Bool astar(Node *start, Node *goal) {
             return TRUE;
         }
 
-        for(short foo = 0; foo < current->n_successors; foo++) {
-            Node *successor = current->successors[foo];
-            const double distance = current->distance + get_distance(current, successor);
-            if(successor->distance > distance) {
-                const double heuristic = get_heuristic(successor, goal);
-                const double score = distance + heuristic;
+        for(short child = 0; child < current->n_successors; child++) {
+            Node *successor = current->successors[child];
 
+            double distance = current->distance + get_distance(current, successor);
+            if(successor->distance > distance) {
                 successor->distance = distance;
                 successor->parent = current;
 
+                while(is_suitable_for_skip(successor) && (successor->successors[0] != goal)) {
+                    distance += get_distance(successor, successor->successors[0]);
+
+                    successor->successors[0]->distance = distance;
+                    successor->successors[0]->parent = successor;
+
+                    successor = successor->successors[0];
+                }
+
+                const double heuristic = get_heuristic(successor, goal);
+                const double score = distance + heuristic;
                 if(successor->open == TRUE) {
                     replace(&queue, successor, score);
                 } else {

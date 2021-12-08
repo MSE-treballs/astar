@@ -3,7 +3,7 @@
 // python -c "import math; print(math.pi / 180)"
 const double DEG_TO_RAD = 0.017453292519943295;
 
-size_t read_graph_from_file(FILE *f, Node **nodes_vector) {
+size_t read_graph_from_file(FILE *const f, Node **const nodes_vector) {
     ASSERT(f != NULL);
     ASSERT(nodes_vector != NULL);
 
@@ -74,6 +74,7 @@ size_t read_graph_from_file(FILE *f, Node **nodes_vector) {
             .parent = NULL,
             .n_successors = 0,
             .successors = NULL,
+            .n_parents = 0,
         };
     }
 
@@ -107,6 +108,10 @@ size_t read_graph_from_file(FILE *f, Node **nodes_vector) {
             size_t index_to = search_node(node_id, nodes, n_nodes);
 
             if(index_to == (size_t) -1) {
+                continue;
+            }
+
+            if(index_to == index_from) {
                 continue;
             }
 

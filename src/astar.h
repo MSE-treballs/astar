@@ -5,4 +5,4 @@
 
 typedef enum {OPEN, CLOSED} Queue;
 
-Bool astar(Node *start, Node *goal);
+Bool astar(Node *const start, const Node *const goal);

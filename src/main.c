@@ -8,16 +8,16 @@ int main(int argc, char *argv[]) {
         return 1;
     }
 
-    FILE *f = fopen(argv[1], "r");
-    if(f == NULL) {
+    FILE *file = fopen(argv[1], "r");
+    if(file == NULL) {
         fprintf(stderr, "Could not find file \"%s\"\n", argv[1]);
         return 2;
     }
 
     Node *nodes = NULL;
-    read_graph_from_file(f, &nodes);
+    read_graph_from_file(file, &nodes);
 
-    fclose(f);
+    fclose(file);
 
     Node *from = nodes + 729630;
     Node *to = nodes + 318042;

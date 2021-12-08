@@ -3,7 +3,7 @@
 // python -c "import math; print(math.pi / 180)"
 const double DEG_TO_RAD = 0.017453292519943295;
 
-size_t read_graph_from_file(FILE *const f, Node **const nodes_vector) {
+size_t read_graph_from_file(FILE *const file, Node **const nodes_vector) {
     ASSERT(f != NULL);
     ASSERT(nodes_vector != NULL);
 
@@ -11,12 +11,12 @@ size_t read_graph_from_file(FILE *const f, Node **const nodes_vector) {
     size_t line_length = 0;
 
     // Ignore first three rows of the file
-    getline(&line, &line_length, f);
-    getline(&line, &line_length, f);
-    getline(&line, &line_length, f);
+    getline(&line, &line_length, file);
+    getline(&line, &line_length, file);
+    getline(&line, &line_length, file);
 
     size_t n_nodes = 0;
-    while(getline(&line, &line_length, f) > 0) {
+    while(getline(&line, &line_length, file) > 0) {
         if(line[0] == 'n') {
             n_nodes++;
         } else {
@@ -25,7 +25,7 @@ size_t read_graph_from_file(FILE *const f, Node **const nodes_vector) {
     }
 
     size_t n_ways = 1;
-    while(getline(&line, &line_length, f) > 0) {
+    while(getline(&line, &line_length, file) > 0) {
         if(line[0] == 'w') {
             n_ways++;
         } else {
@@ -41,15 +41,15 @@ size_t read_graph_from_file(FILE *const f, Node **const nodes_vector) {
     }
     *nodes_vector = nodes;
 
-    rewind(f);
+    rewind(file);
 
     // Ignore first three rows of the file
-    getline(&line, &line_length, f);
-    getline(&line, &line_length, f);
-    getline(&line, &line_length, f);
+    getline(&line, &line_length, file);
+    getline(&line, &line_length, file);
+    getline(&line, &line_length, file);
 
     for(size_t iter = 0; iter < n_nodes; iter++) {
-        getline(&line, &line_length, f);
+        getline(&line, &line_length, file);
 
         char *next_field = line + 5;
 
@@ -79,7 +79,7 @@ size_t read_graph_from_file(FILE *const f, Node **const nodes_vector) {
     }
 
     for(size_t iter = 0; iter < n_ways; iter++) {
-        getline(&line, &line_length, f);
+        getline(&line, &line_length, file);
 
         char *next_field = line + 4;
 

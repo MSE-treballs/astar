@@ -58,6 +58,7 @@ void add_successor(Node *node, Node *successor) {
 
     node->successors[node->n_successors] = successor;
     node->n_successors++;
+    successor->n_parents++;
 }
 
 #define MIN_SHORTCUT_LENGTH 3
@@ -81,18 +82,4 @@ void add_shortcut(Node *root, Node *successor) {
     if(length <= MIN_SHORTCUT_LENGTH) {
         return;
     }
-
-    Shortcut *tmp = (Shortcut *) realloc(root->shortcuts, sizeof(Shortcut) * (root->n_shortcuts + 1));
-    if(tmp == NULL) {
-        fprintf(stderr, "Could not allocate enough memory for %d shortcuts to node %zu\n", root->n_shortcuts + 1, root->id);
-        return;
-    }
-
-    root->shortcuts = tmp;
-
-    root->shortcuts[root->n_shortcuts] = (Shortcut) {
-        .cost = cost,
-        .end = successor,
-    };
-    root->n_shortcuts++;
 }

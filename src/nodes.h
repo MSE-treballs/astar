@@ -20,8 +20,7 @@ typedef struct Node {
     Node *parent;
     short n_successors;
     Node **successors;
-    short n_shortcuts;
-    Shortcut *shortcuts;
+    short n_parents;
 } Node;
 
 #include "metrics.h"

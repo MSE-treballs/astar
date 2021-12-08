@@ -2,7 +2,7 @@
 
 const double EARTH_RADIOUS = 6371000;
 
-double get_distance(const Node *from, const Node *to) {
+double get_distance(const Node *const from, const Node *const to) {
     ASSERT(from != NULL);
     ASSERT(to != NULL);
 
@@ -22,7 +22,7 @@ double get_distance(const Node *from, const Node *to) {
     return acos(result) * EARTH_RADIOUS;
 }
 
-double get_heuristic(const Node *from, const Node *to) {
+double get_heuristic(const Node *const from, const Node *const to) {
     ASSERT(from != NULL);
     ASSERT(to != NULL);
 

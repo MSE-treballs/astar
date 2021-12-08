@@ -1,6 +1,6 @@
 #include "heap.h"
 
-PriorityQueue *push(PriorityQueue **queue, Node *node, const double score) {
+PriorityQueue *push(PriorityQueue **const queue, Node *const node, const double score) {
     ASSERT(node != NULL);
     ASSERT(queue != NULL);
     ASSERT(score >= 0);
@@ -38,7 +38,7 @@ PriorityQueue *push(PriorityQueue **queue, Node *node, const double score) {
     return aux;
 }
 
-Node *pop(PriorityQueue **queue) {
+Node *pop(PriorityQueue **const queue) {
     ASSERT(queue != NULL);
     ASSERT((*queue) != NULL);
 
@@ -52,7 +52,7 @@ Node *pop(PriorityQueue **queue) {
     return node;
 }
 
-void replace(PriorityQueue **queue, Node *node, const double score) {
+void replace(PriorityQueue **const queue, Node *const node, const double score) {
     ASSERT(queue != NULL);
     ASSERT((*queue) != NULL);
     ASSERT(node != NULL);
@@ -100,6 +100,6 @@ void replace(PriorityQueue **queue, Node *node, const double score) {
     insertion_point->next = pivot;
 }
 
-Bool is_empty(PriorityQueue *queue) {
+Bool is_empty(const PriorityQueue *const queue) {
     return queue == NULL;
 }

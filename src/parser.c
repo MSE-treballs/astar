@@ -3,9 +3,7 @@
 // python -c "import math; print(math.pi / 180)"
 const double DEG_TO_RAD = 0.017453292519943295;
 
-void optimize_graph(Node *nodes, const size_t n_nodes);
-
-size_t read_graph_from_file(FILE *f, Node **nodes_vector) {
+size_t read_graph_from_file(FILE *const f, Node **const nodes_vector) {
     ASSERT(f != NULL);
     ASSERT(nodes_vector != NULL);
 
@@ -128,19 +126,4 @@ size_t read_graph_from_file(FILE *f, Node **nodes_vector) {
 
     free(line);
     return n_nodes;
-}
-
-void optimize_graph(Node *nodes, const size_t n_nodes) {
-    ASSERT(nodes != NULL);
-    ASSERT(n_nodes > 0);
-
-    for(size_t iter = 0; iter < n_nodes; iter++) {
-        Node *node = nodes + iter;
-        for(short foo = 0; foo < node->n_successors; foo++) {
-            Node *successor = node->successors[foo];
-            if((successor->open == 1) && (successor->n_successors == 1)) {
-                add_shortcut(node, successor);
-            }
-        }
-    }
 }

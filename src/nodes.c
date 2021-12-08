@@ -3,19 +3,19 @@
 // python -c "import math; print(180 / math.pi)"
 const double RAD_TO_DEG = 57.29577951308232;
 
-void print_node(const Node *node) {
+void print_node(const Node *const node) {
     ASSERT(node != NULL);
 
     printf("node: %zu %lf %lf distance %lf\n", node->id, node->lat * RAD_TO_DEG, node->lon * RAD_TO_DEG, node->distance);
 }
 
-void print_node_coords(const Node *node) {
+void print_node_coords(const Node *const node) {
     ASSERT(node != NULL);
 
     printf("%lf,%lf\n", node->lat * RAD_TO_DEG, node->lon * RAD_TO_DEG);
 }
 
-size_t search_node(const size_t id, const Node *nodes, const size_t n_nodes) {
+size_t search_node(const size_t id, const Node *const nodes, const size_t n_nodes) {
     ASSERT(nodes != NULL);
     ASSERT(n_nodes > 0);
 
@@ -38,7 +38,7 @@ size_t search_node(const size_t id, const Node *nodes, const size_t n_nodes) {
     return -1;
 }
 
-void add_successor(Node *node, Node *successor) {
+void add_successor(Node *const node, Node *const successor) {
     ASSERT(node != NULL);
     ASSERT(successor != NULL);
 
@@ -59,27 +59,4 @@ void add_successor(Node *node, Node *successor) {
     node->successors[node->n_successors] = successor;
     node->n_successors++;
     successor->n_parents++;
-}
-
-#define MIN_SHORTCUT_LENGTH 3
-void add_shortcut(Node *root, Node *successor) {
-    ASSERT(root != NULL);
-    ASSERT(successor != NULL);
-    ASSERT(successor->open == 1);
-    ASSERT(successor->n_successors == 1);
-
-    short unsigned length = 0;
-    double cost = get_distance(root, successor);
-    while((successor->n_successors == 1) && (successor->successors[0]->open == 1)) {
-        if(successor == root) {
-            return;
-        }
-        cost += get_distance(successor, successor->successors[0]);
-        successor->successors[0]->parent = successor;
-        successor = successor->successors[0];
-        length++;
-    }
-    if(length <= MIN_SHORTCUT_LENGTH) {
-        return;
-    }
 }

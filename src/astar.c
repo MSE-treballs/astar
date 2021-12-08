@@ -1,12 +1,12 @@
 #include "astar.h"
 
-Bool is_suitable_for_skip(const Node *node) {
+Bool is_suitable_for_skip(const Node *const node) {
     return (node->n_successors == 1)
         && (node->n_parents == 1)
         && (node->successors[0]->parent == NULL);
 }
 
-Bool astar(Node *start, Node *goal) {
+Bool astar(Node *const start, const Node *const goal) {
     ASSERT(start != NULL);
     ASSERT(goal != NULL);
 

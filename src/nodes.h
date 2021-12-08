@@ -6,11 +6,6 @@
 
 typedef struct Node Node;
 
-typedef struct {
-    double cost;
-    Node *end;
-} Shortcut;
-
 typedef struct Node {
     size_t id;
     double lat;
@@ -25,8 +20,7 @@ typedef struct Node {
 
 #include "metrics.h"
 
-void print_node(const Node *node);
-void print_node_coords(const Node *node);
+void print_node(const Node *const node);
+void print_node_coords(const Node *const node);
 size_t search_node(const size_t id, const Node *nodes, const size_t n_nodes);
-void add_successor(Node *node, Node *successor);
-void add_shortcut(Node *node, Node *successor);
+void add_successor(Node *const node, Node *const successor);

@@ -1,7 +1,7 @@
 #pragma once
 #include <stdlib.h>
 
-typedef enum {FALSE, TRUE} Bool;
+typedef enum { FALSE, TRUE } Bool;
 
 #ifndef DEBUG
     #define ASSERT(n) {}

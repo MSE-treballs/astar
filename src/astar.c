@@ -22,8 +22,8 @@ Bool astar(Node *const start, const Node *const goal) {
             return TRUE;
         }
 
-        for(short foo = 0; foo < current->n_successors; foo++) {
-            Node *successor = current->successors[foo];
+        for(short child = 0; child < current->n_successors; child++) {
+            Node *successor = current->successors[child];
 
             double distance = current->distance + get_distance(current, successor);
             if(successor->distance > distance) {

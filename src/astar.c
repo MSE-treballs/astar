@@ -30,7 +30,7 @@ Bool astar(Node *const start, const Node *const goal) {
                 successor->distance = distance;
                 successor->parent = current;
 
-                while(is_suitable_for_skip(successor) && (successor->successors[0] != goal)) {
+                while((successor != goal) && is_suitable_for_skip(successor)) {
                     distance += get_distance(successor, successor->successors[0]);
 
                     successor->successors[0]->distance = distance;

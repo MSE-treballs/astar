@@ -16,7 +16,7 @@ Heap *heap_init() {
     Element *const elements = (Element *) malloc((heap_capacity_start + 1) * sizeof(Element));
     ASSERT(elements != NULL);
 
-    heap->elements[0] = (Element) {
+    elements[0] = (Element) {
         .node = NULL,
         .score = 0.0,
     };

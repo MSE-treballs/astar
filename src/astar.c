@@ -1,4 +1,6 @@
 #include "astar.h"
+#include "heap.h"
+#include <stdio.h>
 
 Bool is_suitable_for_skip(const Node *const node) {
     return (node->n_successors == 1)
@@ -10,13 +12,13 @@ Bool astar(Node *const start, const Node *const goal) {
     ASSERT(start != NULL);
     ASSERT(goal != NULL);
 
-    PriorityQueue *queue = NULL;
+    Heap *heap = heap_init();
 
     start->distance = 0;
-    push(&queue, start, 0);
+    heap_push(heap, start, 0);
 
-    while(!is_empty(queue)) {
-        Node *current = pop(&queue);
+    while(!heap_is_empty(heap)) {
+        Node *current = heap_pop(heap);
 
         if(current == goal) {
             return TRUE;
@@ -42,9 +44,9 @@ Bool astar(Node *const start, const Node *const goal) {
                 const double heuristic = get_heuristic(successor, goal);
                 const double score = distance + heuristic;
                 if(successor->open == TRUE) {
-                    replace(&queue, successor, score);
+                    heap_replace(heap, successor, score);
                 } else {
-                    push(&queue, successor, score);
+                    heap_push(heap, successor, score);
                 }
             }
         }

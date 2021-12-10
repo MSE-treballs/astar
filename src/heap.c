@@ -46,6 +46,8 @@ void heap_fixup(Heap *const heap, size_t index) {
 }
 
 void heap_push(Heap *const heap, Node *const node, const double score) {
+    node->open = TRUE;
+
     if(heap->n_elements == heap->capacity) {
         heap_increase_capacity(heap);
     }
@@ -86,7 +88,9 @@ Bool heap_is_empty(const Heap *const heap) {
 
 Node *heap_pop(Heap *const heap) {
     ASSERT(!heap_is_empty(heap));
+
     Node *const node = heap->elements[1].node;
+    node->open = FALSE;
 
     heap_swap(heap, 1, heap->n_elements);
     heap->n_elements--;

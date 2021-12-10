@@ -8,8 +8,8 @@ typedef struct {
 } Element;
 
 typedef struct {
-    unsigned capacity;
-    unsigned n_elements;
+    size_t capacity;
+    size_t n_elements;
     Element *elements;
 } Heap;
 

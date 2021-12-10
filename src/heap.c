@@ -1,105 +1,114 @@
 #include "heap.h"
 
-PriorityQueue *push(PriorityQueue **const queue, Node *const node, const double score) {
-    ASSERT(node != NULL);
-    ASSERT(queue != NULL);
-    ASSERT(score >= 0);
+const size_t heap_capacity_increment = 1000;
+const size_t heap_capacity_start = 1000;
 
-    node->open = TRUE;
+void heap_swap(Heap *const heap, const size_t a, const size_t b) {
+    const Element tmp = heap->elements[b];
+    heap->elements[b] = heap->elements[a];
+    heap->elements[a] = tmp;
+}
 
-    PriorityQueue *aux = (PriorityQueue *) malloc(sizeof(PriorityQueue));
-    ASSERT(aux != NULL);
+Heap *heap_init() {
+    Heap *const heap = (Heap *) malloc(sizeof(Heap));
+    ASSERT(heap != NULL);
 
-    *aux = (PriorityQueue) {
-        .next = NULL,
+    Element *const elements = (Element *) malloc((heap_capacity_start + 1) * sizeof(Element));
+    ASSERT(elements != NULL);
+
+    elements[0] = (Element) {
+        .node = NULL,
+        .score = 0.0,
+    };
+
+    *heap = (Heap) {
+        .capacity = heap_capacity_start,
+        .n_elements = 0,
+        .elements = elements,
+    };
+
+    return heap;
+}
+
+void heap_increase_capacity(Heap *const heap) {
+    heap->capacity += heap_capacity_increment;
+
+    heap->elements = (Element *) realloc(heap->elements, heap->capacity * sizeof(Element));
+    ASSERT(heap->elements != NULL);
+}
+
+void heap_fixup(Heap *const heap, size_t index) {
+    while((index > 1) && (heap->elements[index].score < heap->elements[index / 2].score)) {
+        heap_swap(heap, index, index / 2);
+
+        index /= 2;
+    }
+}
+
+void heap_push(Heap *const heap, Node *const node, const double score) {
+    if(heap->n_elements == heap->capacity) {
+        heap_increase_capacity(heap);
+    }
+
+    heap->n_elements++;
+    const size_t index = heap->n_elements;
+
+    heap->elements[index] = (Element) {
         .node = node,
         .score = score,
     };
 
-    if(*queue == NULL) {
-        *queue = aux;
-        return aux;
-    }
-
-    if((*queue)->score > score) {
-        aux->next = *queue;
-        *queue = aux;
-        return aux;
-    }
-
-    PriorityQueue *tmp = *queue;
-    while((tmp->next != NULL) && (score > tmp->next->score)) {
-        tmp = tmp->next;
-    }
-
-    aux->next = tmp->next;
-    tmp->next = aux;
-
-    return aux;
+    heap_fixup(heap, index);
 }
 
-Node *pop(PriorityQueue **const queue) {
-    ASSERT(queue != NULL);
-    ASSERT((*queue) != NULL);
+void heap_fixdown(Heap *const heap, size_t index) {
+    while(2 * index <= heap->n_elements) {
+        size_t pivot = 2 * index;
 
-    Node *node = (*queue)->node;
-    node->open = FALSE;
+        if((pivot < heap->n_elements)
+        && (heap->elements[pivot + 1].score < heap->elements[pivot].score)) {
+            pivot++;
+        }
 
-    PriorityQueue *tmp = *queue;
-    *queue = (*queue)->next;
-    free(tmp);
+        if(heap->elements[index].score <= heap->elements[pivot].score) {
+            break;
+        }
+
+        heap_swap(heap, index, pivot);
+
+        index = pivot;
+    }
+}
+
+Bool heap_is_empty(const Heap *const heap) {
+    return heap->n_elements == 0;
+}
+
+Node *heap_pop(Heap *const heap) {
+    ASSERT(!heap_is_empty(heap));
+    Node *const node = heap->elements[1].node;
+
+    heap_swap(heap, 1, heap->n_elements);
+    heap->n_elements--;
+
+    heap_fixdown(heap, 1);
 
     return node;
 }
 
-void replace(PriorityQueue **const queue, Node *const node, const double score) {
-    ASSERT(queue != NULL);
-    ASSERT((*queue) != NULL);
-    ASSERT(node != NULL);
-    ASSERT(score >= 0);
-
-    if((*queue)->node == node) {
-        (*queue)->score = score;
-        return;
-    }
-
-    if((*queue)->score > score) {
-        PriorityQueue *removal_point = *queue;
-
-        while(removal_point->next->node != node) {
-            removal_point = removal_point->next;
+size_t heap_find_node(const Heap *const heap, Node *const node) {
+    for(size_t index = 1; index < heap->n_elements; index++) {
+        if(heap->elements[index].node == node) {
+            return index;
         }
-
-        PriorityQueue *pivot = removal_point->next;
-        pivot->score = score;
-
-        removal_point->next = removal_point->next->next;
-        pivot->next = *queue;
-
-        *queue = pivot;
-        return;
     }
 
-    PriorityQueue *insertion_point = *queue;
-
-    while(insertion_point->next->score < score) {
-        insertion_point = insertion_point->next;
-    }
-
-    PriorityQueue *removal_point = insertion_point;
-
-    while(removal_point->next->node != node) {
-        removal_point = removal_point->next;
-    }
-
-    PriorityQueue *pivot = removal_point->next;
-    pivot->score = score;
-
-    removal_point->next = removal_point->next->next;
-    pivot->next = insertion_point->next;
-    insertion_point->next = pivot;
+    return INT_MAX;
 }
 
-Bool is_empty(const PriorityQueue *const queue) {
-    return queue == NULL;
+void heap_replace(Heap *const heap, Node *const node, const double score) {
+    const size_t index = heap_find_node(heap, node);
+
+    heap->elements[index].score = score;
+    heap_fixup(heap, index);
 }

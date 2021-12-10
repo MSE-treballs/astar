@@ -2,14 +2,19 @@
 #include "defs.h"
 #include "nodes.h"
 
-typedef struct PriorityQueue PriorityQueue;
-typedef struct PriorityQueue {
-    PriorityQueue *next;
+typedef struct {
     Node *node;
     double score;
-} PriorityQueue;
+} Element;
 
-PriorityQueue *push(PriorityQueue **const queue, Node *const node, const double score);
-Node *pop(PriorityQueue **queue);
-void replace(PriorityQueue **const queue, Node *const node, const double score);
-Bool is_empty(const PriorityQueue *const queue);
+typedef struct {
+    size_t capacity;
+    size_t n_elements;
+    Element *elements;
+} Heap;
+
+Heap *heap_init();
+void heap_push(Heap *const heap, Node *const node, const double score);
+Node *heap_pop(Heap *const heap);
+void heap_replace(Heap *const heap, Node *const node, const double score);
+Bool heap_is_empty(const Heap *const heap);

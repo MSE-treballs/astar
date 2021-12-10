@@ -31,6 +31,7 @@ int main(int argc, char *argv[]) {
 
     const double elapsed_time = ((double) (end_time - start_time)) / ((double) CLOCKS_PER_SEC);
     fprintf(stderr, "A* algorithm run in %lf seconds\n", elapsed_time);
+    fprintf(stderr, "Found distance: %lf", to->distance);
 
     if(result == FALSE) {
         fprintf(stderr, "Could not find path between %zu and %zu\n", from->id, to->id);

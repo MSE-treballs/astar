@@ -1,6 +1,6 @@
 #include "metrics.h"
 
-const double EARTH_RADIOUS = 6371000;
+const double EARTH_RADIOUS = 6369539.549050032;
 
 double get_distance(const Node *const from, const Node *const to) {
     ASSERT(from != NULL);

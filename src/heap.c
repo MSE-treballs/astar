@@ -101,17 +101,18 @@ Node *heap_pop(Heap *const heap) {
 }
 
 size_t heap_find_node(const Heap *const heap, Node *const node) {
-    for(size_t index = 1; index < heap->n_elements; index++) {
+    for(size_t index = 1; index < heap->n_elements + 1; index++) {
         if(heap->elements[index].node == node) {
             return index;
         }
     }
 
-    return INT_MAX;
+    return 0;
 }
 
 void heap_replace(Heap *const heap, Node *const node, const double score) {
     const size_t index = heap_find_node(heap, node);
+    ASSERT(index != 0);
 
     heap->elements[index].score = score;
     heap_fixup(heap, index);

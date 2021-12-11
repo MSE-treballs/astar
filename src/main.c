@@ -1,7 +1,8 @@
-#include <time.h>
 #include "astar.h"
-#include "parser.h"
+#include "defs.h"
 #include "nodes.h"
+#include "parser.h"
+#include <time.h>
 
 int main(int argc, char *argv[]) {
     if((argc != 2) && (argc != 4)) {

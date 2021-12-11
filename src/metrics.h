@@ -1,5 +1,4 @@
 #pragma once
-#include <math.h>
 #include "nodes.h"
 
 float get_distance(const Node *from, const Node *to);

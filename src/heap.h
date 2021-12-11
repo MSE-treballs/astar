@@ -1,5 +1,4 @@
 #pragma once
-#include "defs.h"
 #include "nodes.h"
 
 typedef struct {

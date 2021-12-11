@@ -1,11 +1,5 @@
 #pragma once
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <values.h>
 #include "nodes.h"
-#include "defs.h"
-
-#define FS "|"
+#include <stdio.h>
 
 size_t read_graph_from_file(FILE *const f, Node **const nodes);

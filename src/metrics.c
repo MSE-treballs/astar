@@ -1,4 +1,5 @@
 #include "metrics.h"
+#include <math.h>
 
 const float EARTH_RADIOUS = 6369539.549050032;
 

@@ -1,4 +1,11 @@
+#include "defs.h"
 #include "parser.h"
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <values.h>
+
+#define FS "|"
 
 // python -c "import math; print(math.pi / 180)"
 const float DEG_TO_RAD = 0.017453292519943295;

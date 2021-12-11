@@ -1,4 +1,7 @@
 #include "astar.h"
+#include "defs.h"
+#include "heap.h"
+#include "metrics.h"
 #include <stdio.h>
 
 Bool is_suitable_for_skip(const Node *const node) {

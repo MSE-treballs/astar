@@ -6,6 +6,7 @@ typedef enum { FALSE, TRUE } Bool;
 #ifndef DEBUG
     #define ASSERT(n) {}
 #else
+    #include <stdio.h>
     #define ASSERT(n)                                   \
     if(!(n)) {                                          \
         fprintf(stderr, "\n\t  DEBUG INFO  \n");        \

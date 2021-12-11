@@ -1,3 +1,4 @@
+#include "defs.h"
 #include "heap.h"
 
 const unsigned heap_capacity_start = 1000;

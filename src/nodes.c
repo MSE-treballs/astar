@@ -1,4 +1,7 @@
 #include "nodes.h"
+#include <stdio.h>
+#include <stdlib.h>
+#include <values.h>
 
 // python -c "import math; print(180 / math.pi)"
 const float RAD_TO_DEG = 57.29577951308232;

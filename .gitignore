@@ -8,7 +8,7 @@
 # Unignore makefile
 !Makefile
 
-./astar.*
+astar.*
 
 *.out
 

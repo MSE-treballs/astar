@@ -1,18 +1,15 @@
 #include "nodes.h"
+#include <stdio.h>
+#include <stdlib.h>
+#include <values.h>
 
 // python -c "import math; print(180 / math.pi)"
-const double RAD_TO_DEG = 57.29577951308232;
+const float RAD_TO_DEG = 57.29577951308232;
 
 void print_node(const Node *const node) {
     ASSERT(node != NULL);
 
-    printf("node: %zu %lf %lf distance %lf\n", node->id, node->lat * RAD_TO_DEG, node->lon * RAD_TO_DEG, node->distance);
-}
-
-void print_node_coords(const Node *const node) {
-    ASSERT(node != NULL);
-
-    printf("%lf,%lf\n", node->lat * RAD_TO_DEG, node->lon * RAD_TO_DEG);
+    printf("%zu,%f,%f\n", node->id, node->lat * RAD_TO_DEG, node->lon * RAD_TO_DEG);
 }
 
 size_t search_node(const size_t id, const Node *const nodes, const size_t n_nodes) {
@@ -22,7 +19,7 @@ size_t search_node(const size_t id, const Node *const nodes, const size_t n_node
     size_t low = 0;
     size_t high = n_nodes - 1;
 
-    size_t pivot = -1;
+    size_t pivot = (size_t) -1;
 
     while(low <= high) {
         pivot = (high + low) / 2;
@@ -35,7 +32,7 @@ size_t search_node(const size_t id, const Node *const nodes, const size_t n_node
         }
     }
 
-    return -1;
+    return (size_t) -1;
 }
 
 void add_successor(Node *const node, Node *const successor) {
@@ -48,15 +45,23 @@ void add_successor(Node *const node, Node *const successor) {
         }
     }
 
-    Node **tmp = (Node **) realloc(node->successors, sizeof(Node *) * (node->n_successors + 1));
-    if(tmp == NULL) {
+    Node **successors = (Node **) realloc(node->successors, sizeof(Node *) * (node->n_successors + 1));
+    if(successors == NULL) {
         fprintf(stderr, "Could not allocate enough memory for %d successors to node %zu\n", node->n_successors + 1, node->id);
         return;
     }
+    node->successors = successors;
 
-    node->successors = tmp;
+    float *distances = (float *) realloc(node->distances, sizeof(float) * (node->n_successors + 1));
+    if(distances == NULL) {
+        fprintf(stderr, "Could not allocate enough memory for %d successors' distances to node %zu\n", node->n_successors + 1, node->id);
+        return;
+    }
+    node->distances = distances;
 
     node->successors[node->n_successors] = successor;
+    node->distances[node->n_successors] = get_distance(node, successor);
+
     node->n_successors++;
     successor->n_parents++;
 }

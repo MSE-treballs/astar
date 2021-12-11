@@ -1,9 +1,9 @@
 #include "heap.h"
 
-const size_t heap_capacity_increment = 1000;
-const size_t heap_capacity_start = 1000;
+const unsigned heap_capacity_start = 1000;
+const unsigned heap_capacity_increment = 1000;
 
-void heap_swap(Heap *const heap, const size_t a, const size_t b) {
+void heap_swap(Heap *const heap, const unsigned a, const unsigned b) {
     const Element tmp = heap->elements[b];
     heap->elements[b] = heap->elements[a];
     heap->elements[a] = tmp;
@@ -37,7 +37,7 @@ void heap_increase_capacity(Heap *const heap) {
     ASSERT(heap->elements != NULL);
 }
 
-void heap_fixup(Heap *const heap, size_t index) {
+void heap_fixup(Heap *const heap, unsigned index) {
     while((index > 1) && (heap->elements[index].score < heap->elements[index / 2].score)) {
         heap_swap(heap, index, index / 2);
 
@@ -45,7 +45,7 @@ void heap_fixup(Heap *const heap, size_t index) {
     }
 }
 
-void heap_push(Heap *const heap, Node *const node, const double score) {
+void heap_push(Heap *const heap, Node *const node, const float score) {
     node->open = TRUE;
 
     if(heap->n_elements == heap->capacity) {
@@ -53,7 +53,7 @@ void heap_push(Heap *const heap, Node *const node, const double score) {
     }
 
     heap->n_elements++;
-    const size_t index = heap->n_elements;
+    const unsigned index = heap->n_elements;
 
     heap->elements[index] = (Element) {
         .node = node,
@@ -63,9 +63,9 @@ void heap_push(Heap *const heap, Node *const node, const double score) {
     heap_fixup(heap, index);
 }
 
-void heap_fixdown(Heap *const heap, size_t index) {
+void heap_fixdown(Heap *const heap, unsigned index) {
     while(2 * index <= heap->n_elements) {
-        size_t pivot = 2 * index;
+        unsigned pivot = 2 * index;
 
         if((pivot < heap->n_elements)
         && (heap->elements[pivot + 1].score < heap->elements[pivot].score)) {
@@ -100,8 +100,8 @@ Node *heap_pop(Heap *const heap) {
     return node;
 }
 
-size_t heap_find_node(const Heap *const heap, Node *const node) {
-    for(size_t index = 1; index < heap->n_elements + 1; index++) {
+unsigned heap_find_node(const Heap *const heap, Node *const node) {
+    for(unsigned index = 1; index < heap->n_elements + 1; index++) {
         if(heap->elements[index].node == node) {
             return index;
         }
@@ -110,8 +110,8 @@ size_t heap_find_node(const Heap *const heap, Node *const node) {
     return 0;
 }
 
-void heap_replace(Heap *const heap, Node *const node, const double score) {
-    const size_t index = heap_find_node(heap, node);
+void heap_replace(Heap *const heap, Node *const node, const float score) {
+    const unsigned index = heap_find_node(heap, node);
     ASSERT(index != 0);
 
     heap->elements[index].score = score;

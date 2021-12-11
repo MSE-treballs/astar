@@ -26,22 +26,23 @@ Bool astar(Node *const start, const Node *const goal) {
         for(short child = 0; child < current->n_successors; child++) {
             Node *successor = current->successors[child];
 
-            double distance = current->distance + get_distance(current, successor);
+            float distance = current->distance + current->distances[child];
             if(successor->distance > distance) {
                 successor->distance = distance;
                 successor->parent = current;
 
                 while((successor != goal) && is_suitable_for_skip(successor)) {
-                    distance += get_distance(successor, successor->successors[0]);
+                    Node *const next = successor->successors[0];
+                    distance += successor->distances[0];
 
-                    successor->successors[0]->distance = distance;
-                    successor->successors[0]->parent = successor;
+                    next->distance = distance;
+                    next->parent = successor;
 
-                    successor = successor->successors[0];
+                    successor = next;
                 }
 
-                const double heuristic = get_heuristic(successor, goal);
-                const double score = distance + heuristic;
+                const float heuristic = get_heuristic(successor, goal);
+                const float score = distance + heuristic;
                 if(successor->open == TRUE) {
                     heap_replace(heap, successor, score);
                 } else {

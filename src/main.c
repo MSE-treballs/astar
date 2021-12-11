@@ -1,10 +1,11 @@
 #include <time.h>
 #include "astar.h"
 #include "parser.h"
+#include "nodes.h"
 
 int main(int argc, char *argv[]) {
-    if(argc != 2) {
-        fprintf(stderr, "Usage:\n\t%s <map data>\n", argv[0]);
+    if((argc != 2) && (argc != 4)) {
+        fprintf(stderr, "Usage:\n\t%s <map data> [<start-id>] [<goal-id>]\n", argv[0]);
         return 1;
     }
 
@@ -15,49 +16,61 @@ int main(int argc, char *argv[]) {
     }
 
     Node *nodes = NULL;
-    read_graph_from_file(f, &nodes);
-
+    const size_t n_nodes = read_graph_from_file(f, &nodes);
     fclose(f);
 
-    Node *from = nodes + 729630;
-    Node *to = nodes + 318042;
+    Node *start = nodes + 519833;
+    Node *goal = nodes + 461929;
 
-    from = (Node *) nodes + 519833;
-    to = (Node *) nodes + 461929;
+    if(argc == 4) {
+        const size_t start_index = search_node(strtoull(argv[2], NULL, 10), nodes, n_nodes);
+        if(start_index == (size_t) -1) {
+            fprintf(stderr, "Could not find start node with id %s\n", argv[2]);
+            return 3;
+        }
+        start = nodes + start_index;
 
-    const clock_t start_time = clock();
-    const Bool result = astar(from, to);
-    const clock_t end_time = clock();
-
-    const double elapsed_time = ((double) (end_time - start_time)) / ((double) CLOCKS_PER_SEC);
-    fprintf(stderr, "A* algorithm run in %lf seconds\n", elapsed_time);
-    fprintf(stderr, "Found distance: %lf", to->distance);
-
-    if(result == FALSE) {
-        fprintf(stderr, "Could not find path between %zu and %zu\n", from->id, to->id);
-        return EXIT_FAILURE;
+        const size_t goal_index = search_node(strtoull(argv[3], NULL, 10), nodes, n_nodes);
+        if(goal_index == (size_t) -1) {
+            fprintf(stderr, "Could not find goal node with id %s\n", argv[3]);
+            return 4;
+        }
+        goal = nodes + goal_index;
     }
 
-    Node *tmp = to;
-    Node *pv = to->parent;
-    Node *ppv;
-    to->parent = NULL;
-    from->parent = NULL;
+    const clock_t start_time = clock();
+    const Bool result = astar(start, goal);
+    const clock_t end_time = clock();
 
-    while(tmp != from) {
-        ppv=pv->parent;
+    if(result == FALSE) {
+        fprintf(stderr, "Could not find path between %zu and %zu\n", start->id, goal->id);
+        return 5;
+    }
+
+    Node *tmp = goal;
+    Node *pv = goal->parent;
+    Node *ppv;
+    goal->parent = NULL;
+    start->parent = NULL;
+
+    while(tmp != start) {
+        ppv = pv->parent;
         pv->parent = tmp;
 
         tmp = pv;
         pv = ppv;
     }
 
-    printf("lat,lon\n");
-    tmp = from;
+    printf("id,lat,lon\n");
+    tmp = start;
     while(tmp != NULL) {
-        print_node_coords(tmp);
+        print_node(tmp);
         tmp = tmp->parent;
     }
+
+    const float elapsed_time = ((float) (end_time - start_time)) / ((float) CLOCKS_PER_SEC);
+    printf("A* algorithm run in %f seconds\n", elapsed_time);
+    printf("Found distance: %f meters\n", goal->distance);
 
     return 0;
 }

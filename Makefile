@@ -18,7 +18,7 @@ astar: $(OBJECTS)
 $(OBJDIR)%.o: $(SRCDIR)%.c $(DEPENDS)
 	$(CC) $(CFLAGS) -c $< -o $@
 
-release.tar.gz: $(SOURCES) $(DEPENDS) Makefile
+release.tar.gz: $(SOURCES) $(DEPENDS) Makefile README.rst
 	tar -czvf $@ $^
 
 .PHONY: clean
@@ -39,4 +39,3 @@ profile: astar.profile
 
 astar.profile: $(SOURCES) $(DEPENDS)
 	$(CC) $(CFLAGS) $(CPROFILEFLAGS) -o $@ $(SOURCES) $(LFLAGS)
-

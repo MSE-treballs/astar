@@ -4,14 +4,14 @@
 typedef struct Node Node;
 typedef struct Node {
     size_t id;
-    float lat;
-    float lon;
+    double lat;
+    double lon;
     Bool open;
-    float distance;
+    double distance;
     Node *parent;
     short n_successors;
     Node **successors;
-    float *distances;
+    double *distances;
     short n_parents;
 } Node;
 

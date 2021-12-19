@@ -69,9 +69,9 @@ int main(int argc, char *argv[]) {
         tmp = tmp->parent;
     }
 
-    const float elapsed_time = ((float) (end_time - start_time)) / ((float) CLOCKS_PER_SEC);
-    printf("A* algorithm run in %f seconds\n", elapsed_time);
-    printf("Found distance: %f meters\n", goal->distance);
+    const double elapsed_time = ((double) (end_time - start_time)) / ((double) CLOCKS_PER_SEC);
+    printf("A* algorithm run in %lf seconds\n", elapsed_time);
+    printf("Found distance: %lf meters\n", goal->distance);
 
     return 0;
 }

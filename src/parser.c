@@ -8,7 +8,7 @@
 #define FS "|"
 
 // python -c "import math; print(math.pi / 180)"
-const float DEG_TO_RAD = 0.017453292519943295;
+const double DEG_TO_RAD = 0.017453292519943295;
 
 size_t read_graph_from_file(FILE *const f, Node **const nodes_vector) {
     ASSERT(f != NULL);
@@ -67,10 +67,10 @@ size_t read_graph_from_file(FILE *const f, Node **const nodes_vector) {
             strsep(&next_field, FS);
         }
 
-        float lat = strtod(next_field, &next_field);
+        double lat = strtod(next_field, &next_field);
         next_field++;
 
-        float lon = strtod(next_field, &next_field);
+        double lon = strtod(next_field, &next_field);
 
         nodes[iter] = (Node) {
             .id = id,

@@ -3,7 +3,7 @@
 
 typedef struct {
     Node *node;
-    float score;
+    double score;
 } Element;
 
 typedef struct {
@@ -13,7 +13,7 @@ typedef struct {
 } Heap;
 
 Heap *heap_init();
-void heap_push(Heap *const heap, Node *const node, const float score);
+void heap_push(Heap *const heap, Node *const node, const double score);
 Node *heap_pop(Heap *const heap);
-void heap_replace(Heap *const heap, Node *const node, const float score);
+void heap_replace(Heap *const heap, Node *const node, const double score);
 Bool heap_is_empty(const Heap *const heap);

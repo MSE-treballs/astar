@@ -34,7 +34,7 @@ Heap *heap_init() {
 void heap_increase_capacity(Heap *const heap) {
     heap->capacity += heap_capacity_increment;
 
-    heap->elements = (Element *) realloc(heap->elements, heap->capacity * sizeof(Element));
+    heap->elements = (Element *) realloc(heap->elements, (heap->capacity + 1) * sizeof(Element));
     ASSERT(heap->elements != NULL);
 }
 

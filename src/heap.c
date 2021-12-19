@@ -46,7 +46,7 @@ void heap_fixup(Heap *const heap, unsigned index) {
     }
 }
 
-void heap_push(Heap *const heap, Node *const node, const float score) {
+void heap_push(Heap *const heap, Node *const node, const double score) {
     node->open = TRUE;
 
     if(heap->n_elements == heap->capacity) {
@@ -111,7 +111,7 @@ unsigned heap_find_node(const Heap *const heap, Node *const node) {
     return 0;
 }
 
-void heap_replace(Heap *const heap, Node *const node, const float score) {
+void heap_replace(Heap *const heap, Node *const node, const double score) {
     const unsigned index = heap_find_node(heap, node);
     ASSERT(index != 0);
 

@@ -1,19 +1,19 @@
 #include "metrics.h"
 #include <math.h>
 
-const float EARTH_RADIOUS = 6369539.549050032;
+const double EARTH_RADIOUS = 6369539.549050032;
 
-inline float get_distance(const Node *const from, const Node *const to) {
+inline double get_distance(const Node *const from, const Node *const to) {
     ASSERT(from != NULL);
     ASSERT(to != NULL);
 
-    const float lat_from = from->lat;
-    const float lat_to = to->lat;
-    const float lon_from = from->lon;
-    const float lon_to = to->lon;
+    const double lat_from = from->lat;
+    const double lat_to = to->lat;
+    const double lon_from = from->lon;
+    const double lon_to = to->lon;
 
-    const float result = sinf(lat_from) * sinf(lat_to)
-        + cosf(lat_from) * cosf(lat_to) * cosf(lon_to - lon_from);
+    const double result = sin(lat_from) * sin(lat_to)
+        + cos(lat_from) * cos(lat_to) * cos(lon_to - lon_from);
 
     if(result >= 1) {
         return 0;
@@ -24,7 +24,7 @@ inline float get_distance(const Node *const from, const Node *const to) {
     return acos(result) * EARTH_RADIOUS;
 }
 
-inline float get_heuristic(const Node *const from, const Node *const to) {
+inline double get_heuristic(const Node *const from, const Node *const to) {
     ASSERT(from != NULL);
     ASSERT(to != NULL);
 

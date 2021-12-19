@@ -4,12 +4,12 @@
 #include <values.h>
 
 // python -c "import math; print(180 / math.pi)"
-const float RAD_TO_DEG = 57.29577951308232;
+const double RAD_TO_DEG = 57.29577951308232;
 
 void print_node(const Node *const node) {
     ASSERT(node != NULL);
 
-    printf("%zu,%f,%f\n", node->id, node->lat * RAD_TO_DEG, node->lon * RAD_TO_DEG);
+    printf("%zu,%lf,%lf\n", node->id, node->lat * RAD_TO_DEG, node->lon * RAD_TO_DEG);
 }
 
 size_t search_node(const size_t id, const Node *const nodes, const size_t n_nodes) {
@@ -52,7 +52,7 @@ void add_successor(Node *const node, Node *const successor) {
     }
     node->successors = successors;
 
-    float *distances = (float *) realloc(node->distances, sizeof(float) * (node->n_successors + 1));
+    double *distances = (double *) realloc(node->distances, sizeof(double) * (node->n_successors + 1));
     if(distances == NULL) {
         fprintf(stderr, "Could not allocate enough memory for %d successors' distances to node %zu\n", node->n_successors + 1, node->id);
         return;
